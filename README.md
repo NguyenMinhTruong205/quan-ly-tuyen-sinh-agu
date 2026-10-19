@@ -1,4 +1,4 @@
-# 🎓 Dự Án Quản Lý Tuyển Sinh / Tài Sản AGU (QLTS AGU)
+# 🎓 Dự Án Quản Lý Tuyển Sinh / Tuyển Sinh AGU (QLTS AGU)
 
 Dự án được khởi tạo và cấu hình bởi bộ phận **DevOps** (DevOps 1 & DevOps 2).
 

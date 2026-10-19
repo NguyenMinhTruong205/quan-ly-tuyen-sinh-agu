@@ -32,7 +32,7 @@ connectDB().catch((err) => {
 // Route trang chủ
 app.get('/', (req, res) => {
   res.json({
-    project: 'QLTS AGU — Hệ thống Quản Lý Tuyển Sinh / Tài Sản AGU',
+    project: 'QLTS AGU — Hệ thống Quản Lý Tuyển Sinh / Tuyển Sinh AGU',
     role: 'DevOps 2 Service',
     status: 'Running',
     documentation: '/api/health'

@@ -69,7 +69,7 @@ export default function Home() {
           WebkitTextFillColor: 'transparent',
           marginBottom: '10px'
         }}>
-          QLTS AGU — Quản Lý Tài Sản
+          QLTS AGU — Quản Lý Tuyển Sinh
         </h1>
         <p style={{ color: '#94a3b8', fontSize: '1.05rem', maxWidth: '650px', margin: '0 auto' }}>
           Dự án Next.js đã được cấu hình hoàn chỉnh cho DevOps 2 (Quản lý .env, kết nối MongoDB, Gemini AI & sẵn sàng Deploy Vercel/Render).
