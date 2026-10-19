@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const authRoutes = require('./routes/authRoutes');
+const hoSoRoutes = require('./routes/hoSoRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -9,6 +11,10 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+// API Backend 1 - Đăng ký, xác thực OTP, đăng nhập
+app.use('/api/auth', authRoutes);
+app.use('/api/ho-so', hoSoRoutes);
+
 
 // Hàm kết nối MongoDB hỗ trợ Serverless (Vercel)
 const connectDB = async () => {
