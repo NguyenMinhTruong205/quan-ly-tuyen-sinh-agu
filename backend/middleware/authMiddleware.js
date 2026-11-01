@@ -52,11 +52,10 @@ exports.xacThucToken = (req, res, next) => {
 
 // ==================== CHỈ CHO PHÉP CÁN BỘ ====================
 exports.chiCanBo = (req, res, next) => {
-  if (!req.user || req.user.vaiTro !== 'can_bo') {
-    return res.status(403).json({
-      message: 'Chỉ cán bộ mới có quyền thực hiện chức năng này'
+  if (!req.user || !['can_bo', 'admin'].includes(req.user.vaiTro)) {
+    return res.status(403).json({ 
+      message: 'Bạn không có quyền thực hiện chức năng này' 
     });
   }
-
   next();
 };

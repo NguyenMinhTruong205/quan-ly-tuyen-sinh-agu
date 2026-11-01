@@ -153,14 +153,14 @@ exports.layChiTietHoSo = async (req, res) => {
     }
 
     // Kiểm tra quyền: Cán bộ xem tất cả, Thí sinh chỉ xem của mình
-    if (req.user.vaiTro !== 'can_bo') {
-      const thiSinhId = hoSo.thiSinh._id.toString();
-      if (thiSinhId !== req.user.id && thiSinhId !== req.user.userId) {
-        return res.status(403).json({
-          message: 'Bạn không có quyền xem hồ sơ này'
-        });
-      }
-    }
+  if (!['can_bo', 'admin'].includes(req.user.vaiTro)) {
+  const thiSinhId = hoSo.thiSinh._id.toString();
+  if (thiSinhId !== req.user.id && thiSinhId !== req.user.userId) {
+    return res.status(403).json({
+      message: 'Bạn không có quyền xem hồ sơ này'
+    });
+  }
+}
 
     res.json({
       message: 'Lấy chi tiết hồ sơ thành công',
