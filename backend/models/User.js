@@ -7,7 +7,6 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-
     email: {
       type: String,
       required: true,
@@ -15,28 +14,23 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true
     },
-
     matKhau: {
       type: String,
       required: true
     },
-
     vaiTro: {
       type: String,
-      enum: ['thi_sinh', 'can_bo'],
+      enum: ['thi_sinh', 'can_bo'], // ✅ Khớp chính xác với code của bạn
       default: 'thi_sinh'
     },
-
     daXacThuc: {
       type: Boolean,
       default: false
     },
-
     otp: {
       type: String,
       default: null
     },
-
     otpHetHan: {
       type: Date,
       default: null

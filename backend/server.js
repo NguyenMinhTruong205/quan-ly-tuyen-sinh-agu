@@ -2,21 +2,29 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+
+// Import đường dẫn
 const authRoutes = require('./routes/authRoutes');
 const hoSoRoutes = require('./routes/hoSoRoutes');
+const chatbotRoutes = require('./routes/chatbotRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors());
+// === Middleware ===
+// Cấu hình CORS rõ ràng cho phép Frontend truy cập
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 app.use(express.json());
-// API Backend 1 - Đăng ký, xác thực OTP, đăng nhập
-app.use('/api/auth', authRoutes);
-app.use('/api/ho-so', hoSoRoutes);
 
+// === Đăng ký đường dẫn API ===
+app.use('/api/auth', authRoutes);        // Xác thực & phân quyền
+app.use('/api/ho-so', hoSoRoutes);        // Quản lý hồ sơ tuyển sinh
+app.use('/api/chatbot', chatbotRoutes);   // Chatbot hỗ trợ
 
-// Hàm kết nối MongoDB hỗ trợ Serverless (Vercel)
+// === Kết nối MongoDB ===
 const connectDB = async () => {
   if (mongoose.connection.readyState === 1) {
     return;
@@ -28,28 +36,28 @@ const connectDB = async () => {
   await mongoose.connect(mongoUri, {
     serverSelectionTimeoutMS: 8000,
   });
+  console.log('✅ Kết nối CSDL MongoDB thành công');
 };
 
-// Gọi kết nối ban đầu
+// Kết nối ngay khi khởi động server
 connectDB().catch((err) => {
-  console.error('Lỗi kết nối khởi tạo MongoDB:', err.message);
+  console.error('❌ Lỗi kết nối MongoDB:', err.message);
 });
 
-// Route trang chủ
+// === Trang chủ Backend ===
 app.get('/', (req, res) => {
   res.json({
-    project: 'QLTS AGU — Hệ thống Quản Lý Tuyển Sinh / Tuyển Sinh AGU',
-    role: 'DevOps 2 Service',
+    project: 'QLTS AGU — Hệ thống Quản Lý Tuyển Sinh',
+    role: 'Backend Service',
     status: 'Running',
     documentation: '/api/health'
   });
 });
 
-// Route kiểm tra sức khỏe hệ thống (Health Check)
+// === Kiểm tra trạng thái hệ thống ===
 app.get('/api/health', async (req, res) => {
   let dbStatus = 'disconnected';
   let dbMessage = '';
-
   try {
     await connectDB();
     dbStatus = 'connected';
@@ -60,7 +68,6 @@ app.get('/api/health', async (req, res) => {
   }
 
   const hasGeminiKey = Boolean(process.env.GEMINI_API_KEY);
-
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
@@ -81,7 +88,8 @@ app.get('/api/health', async (req, res) => {
   });
 });
 
-// Khởi chạy server
+// === Khởi động server ===
 app.listen(PORT, () => {
-  console.log(`🚀 Backend Server đang chạy tại cổng http://localhost:${PORT}`);
+  console.log(`🚀 Backend Server đang chạy tại cổng ${PORT}`);
+  console.log(`📍 Truy cập: http://localhost:${PORT}`);
 });

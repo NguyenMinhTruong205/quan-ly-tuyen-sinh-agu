@@ -1,3 +1,4 @@
+
 const express = require('express');
 const router = express.Router();
 
@@ -5,7 +6,8 @@ const {
   taoHoSo,
   layDanhSachHoSo,
   layChiTietHoSo,
-  thamDinhHoSo
+  thamDinhHoSo,
+  traCuuHoSo
 } = require('../controllers/hoSoController');
 
 const {
@@ -13,18 +15,32 @@ const {
   chiCanBo
 } = require('../middleware/authMiddleware');
 
-// Tạo hồ sơ tuyển sinh
+// ==================== TẠO HỒ SƠ TUYỂN SINH ====================
+// Thí sinh phải đăng nhập mới được nộp hồ sơ
 router.post('/', xacThucToken, taoHoSo);
 
-// Lấy danh sách tất cả hồ sơ
-// Chỉ cán bộ mới được xem danh sách
-router.get('/', xacThucToken, chiCanBo, layDanhSachHoSo);
+// ==================== TRA CỨU HỒ SƠ CÔNG KHAI ====================
+// Tra cứu bằng CCCD hoặc mã hồ sơ, không cần đăng nhập
+router.get('/tra-cuu', traCuuHoSo);
 
-// Lấy chi tiết một hồ sơ
-router.get('/:id', xacThucToken, layChiTietHoSo);
+// ==================== LẤY DANH SÁCH HỒ SƠ ====================
+// Chỉ cán bộ được xem danh sách tất cả hồ sơ
+router.get(
+  '/',
+  xacThucToken,
+  chiCanBo,
+  layDanhSachHoSo
+);
 
-// Thẩm định hồ sơ
-// Chỉ cán bộ mới được thẩm định
+// ==================== LẤY CHI TIẾT HỒ SƠ ====================
+router.get(
+  '/:id',
+  xacThucToken,
+  layChiTietHoSo
+);
+
+// ==================== THẨM ĐỊNH HỒ SƠ ====================
+// Chỉ cán bộ được thẩm định hồ sơ
 router.patch(
   '/:id/tham-dinh',
   xacThucToken,

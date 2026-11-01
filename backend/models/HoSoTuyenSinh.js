@@ -6,7 +6,7 @@ const hoSoTuyenSinhSchema = new mongoose.Schema(
     thiSinh: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true
+      required: false
     },
 
     // Thông tin hồ sơ

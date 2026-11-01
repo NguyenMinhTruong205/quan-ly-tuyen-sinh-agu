@@ -1,150 +1,497 @@
 .page {
-  --background: #fafafa;
-  --foreground: #fff;
+  width: 100%;
+  min-height: 100vh;
+  background: #f5f8fd;
+  color: #183153;
+  overflow: hidden;
+}
 
-  --text-primary: #000;
-  --text-secondary: #666;
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 40px;
+  max-width: 1400px;
+  min-height: 510px;
+  margin: 0 auto;
+  padding: 75px 7%;
+  background: linear-gradient(120deg, #102d52, #174d88);
+  border-radius: 0 0 30px 30px;
+  overflow: hidden;
+}
 
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
+}
 
+.hero::before {
+  width: 520px;
+  height: 520px;
+  right: -120px;
+  top: -230px;
+}
+
+.hero::after {
+  width: 390px;
+  height: 390px;
+  right: -40px;
+  bottom: -250px;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+}
+
+.eyebrow,
+.sectionLabel {
+  display: inline-block;
+  color: #3978d5;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.eyebrow {
+  padding: 9px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #d8e9ff;
+}
+
+.hero h1 {
+  margin: 25px 0 18px;
+  color: #fff;
+  font-size: clamp(34px, 4.5vw, 58px);
+  line-height: 1.15;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+}
+
+.hero h1 span {
+  display: block;
+  color: #8fc5ff;
+}
+
+.heroDescription {
+  max-width: 650px;
+  color: #d5e3f5;
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.heroActions {
   display: flex;
-  flex: 1;
+  flex-wrap: wrap;
+  gap: 13px;
+  margin-top: 30px;
+}
+
+.primaryButton,
+.secondaryButton,
+.calloutPrimary,
+.calloutSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 21px;
+  border-radius: 11px;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.primaryButton {
+  background: #fff;
+  color: #174b88;
+}
+
+.primaryButton:hover {
+  background: #eaf3ff;
+  transform: translateY(-2px);
+}
+
+.secondaryButton {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.secondaryButton:hover {
+  background: rgba(255, 255, 255, 0.17);
+  transform: translateY(-2px);
+}
+
+.heroNote {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 27px;
+  color: #c5d8ef;
+  font-size: 12px;
+}
+
+.noteDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #55d6a2;
+}
+
+.heroVisual {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 330px;
+}
+
+.visualCircle {
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-geist-sans);
-  background-color: var(--background);
+  width: 270px;
+  height: 270px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  background: linear-gradient(145deg, #fff, #dcecff);
+  box-shadow: 0 25px 65px rgba(0, 0, 0, 0.2);
 }
 
-.main {
+.visualIcon {
+  font-size: 65px;
+}
+
+.visualTitle {
+  margin-top: 8px;
+  color: #174b88;
+  font-size: 37px;
+  font-weight: 900;
+}
+
+.visualSubtitle {
+  margin-top: 5px;
+  color: #617895;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.floatingCard {
+  position: absolute;
+  right: 0;
+  bottom: 15px;
   display: flex;
-  flex: 1;
-  width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 19px;
+  border: 1px solid #e7edf6;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(8, 30, 62, 0.16);
 }
 
-.intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 24px;
+.floatingCard > span {
+  font-size: 28px;
 }
 
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
+.floatingCard strong,
+.floatingCard small {
+  display: block;
 }
 
-.intro p {
-  max-width: 440px;
+.floatingCard strong {
+  color: #183153;
+  font-size: 13px;
+}
+
+.floatingCard small {
+  margin-top: 4px;
+  color: #718096;
+  font-size: 11px;
+}
+
+.introSection,
+.stepsSection {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 75px 35px;
+}
+
+.sectionHeading {
+  max-width: 680px;
+  margin: 0 auto 35px;
+  text-align: center;
+}
+
+.sectionHeading h2,
+.callout h2 {
+  margin: 12px 0;
+  color: #183153;
+  font-size: clamp(25px, 3vw, 34px);
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+.sectionHeading p,
+.callout p {
+  color: #718096;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.featureCard {
+  padding: 28px;
+  border: 1px solid #e7edf5;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 25px rgba(20, 55, 95, 0.045);
+  transition: 0.2s ease;
+}
+
+.featureCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 32px rgba(20, 55, 95, 0.1);
+}
+
+.featureIcon {
+  display: grid;
+  place-items: center;
+  width: 55px;
+  height: 55px;
+  border-radius: 15px;
+  background: #edf5ff;
+  font-size: 27px;
+}
+
+.featureCard h3,
+.stepCard h3 {
+  margin: 19px 0 10px;
+  color: #1c3b61;
   font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
-  color: var(--text-secondary);
+  font-weight: 800;
 }
 
-.intro a {
-  font-weight: 500;
-  color: var(--text-primary);
+.featureCard p,
+.stepCard p {
+  min-height: 55px;
+  color: #718096;
+  font-size: 14px;
+  line-height: 1.8;
 }
 
-.ctas {
+.featureLink {
+  display: inline-flex;
+  gap: 9px;
+  align-items: center;
+  margin-top: 18px;
+  color: #2563b9;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.featureLink:hover {
+  color: #123d75;
+}
+
+.stepsSection {
+  max-width: none;
+  background: #fff;
+}
+
+.stepsSection > * {
+  max-width: 1230px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.stepCard {
+  padding: 24px;
+  border: 1px solid #e8eef6;
+  border-radius: 16px;
+  background: #fbfdff;
+}
+
+.stepNumber {
+  color: #3478ce;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.callout {
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 440px;
-  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  max-width: 1230px;
+  margin: 65px auto;
+  padding: 38px 42px;
+  border-radius: 22px;
+  background: linear-gradient(120deg, #12345e, #1d5b9b);
+}
+
+.callout h2 {
+  color: #fff;
+}
+
+.callout p {
+  color: #d3e3f6;
+}
+
+.callout .sectionLabel {
+  color: #a8d1ff;
+}
+
+.calloutActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.calloutPrimary {
+  background: #fff;
+  color: #174b88;
+}
+
+.calloutSecondary {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: #fff;
+}
+
+.calloutPrimary:hover,
+.calloutSecondary:hover {
+  transform: translateY(-2px);
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 35px 20px;
+  border-top: 1px solid #e5ebf3;
+  background: #fff;
+  text-align: center;
+}
+
+.footer strong {
+  color: #1b4778;
   font-size: 14px;
 }
 
-.ctas a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
-  cursor: pointer;
-  width: fit-content;
-  font-weight: 500;
+.footer span,
+.footer small {
+  color: #7b8ba1;
+  font-size: 12px;
 }
 
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
-  gap: 8px;
-}
-
-a.secondary {
-  border-color: var(--button-secondary-border);
-}
-
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 60px 7%;
   }
 
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
+  .heroVisual {
+    min-height: 290px;
+  }
+
+  .featureGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stepsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .callout {
+    margin: 45px 20px;
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
-@media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
+@media (max-width: 560px) {
+  .hero {
+    padding: 45px 22px;
+    border-radius: 0 0 22px 22px;
   }
 
-  .intro {
-    gap: 16px;
+  .hero h1 {
+    font-size: 35px;
   }
 
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
+  .heroDescription {
+    font-size: 14px;
   }
 
-  .page {
-    --background: #000;
-    --foreground: #000;
-
-    --text-primary: #ededed;
-    --text-secondary: #999;
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
+  .heroActions {
+    flex-direction: column;
   }
-}
 
-.code {
-  font-family: var(--font-geist-mono);
-  font-size: 0.9em;
-  background: color-mix(in srgb, currentColor 8%, transparent);
-  padding: 0.1em 0.4em;
-  border-radius: 6px;
+  .heroActions a {
+    width: 100%;
+  }
+
+  .visualCircle {
+    width: 220px;
+    height: 220px;
+  }
+
+  .floatingCard {
+    right: 0;
+    bottom: 0;
+  }
+
+  .introSection,
+  .stepsSection {
+    padding: 55px 20px;
+  }
+
+  .featureGrid,
+  .stepsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .featureCard p,
+  .stepCard p {
+    min-height: 0;
+  }
+
+  .callout {
+    padding: 28px 22px;
+  }
+
+  .calloutActions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .calloutActions a {
+    width: 100%;
+  }
 }

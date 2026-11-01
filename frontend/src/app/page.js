@@ -1,293 +1,205 @@
-'use client';
 
-import { useState, useEffect } from 'react';
+"use client";
+
+import Link from "next/link";
+import styles from "./page.module.css";
+
+const features = [
+  {
+    icon: "📝",
+    title: "Nộp hồ sơ trực tuyến",
+    description:
+      "Đăng ký thông tin xét tuyển và gửi hồ sơ trực tuyến thuận tiện.",
+    href: "/nop-ho-so",
+    action: "Nộp hồ sơ",
+  },
+  {
+    icon: "🔎",
+    title: "Tra cứu hồ sơ",
+    description:
+      "Theo dõi tình trạng tiếp nhận và xử lý hồ sơ xét tuyển của bạn.",
+    href: "/tra-cuu",
+    action: "Tra cứu ngay",
+  },
+  {
+    icon: "🎓",
+    title: "Thông tin tuyển sinh",
+    description:
+      "Tìm hiểu thông tin tuyển sinh và chuẩn bị hồ sơ đăng ký.",
+    href: "/tra-cuu",
+    action: "Tìm hiểu thêm",
+  },
+];
 
 export default function Home() {
-  const [healthData, setHealthData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const checkHealth = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch('/api/health');
-      if (!res.ok) {
-        throw new Error(`HTTP error: ${res.status}`);
-      }
-      const data = await res.json();
-      setHealthData(data);
-    } catch (err) {
-      setError(err.message || 'Không thể kết nối đến API');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    checkHealth();
-  }, []);
-
   return (
-    <main style={{
-      maxWidth: '1000px',
-      margin: '0 auto',
-      padding: '40px 20px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '30px'
-    }}>
-      {/* Header */}
-      <header style={{
-        textAlign: 'center',
-        padding: '30px 20px',
-        background: 'rgba(30, 41, 59, 0.7)',
-        backdropFilter: 'blur(12px)',
-        borderRadius: '20px',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)'
-      }}>
-        <div style={{
-          display: 'inline-block',
-          padding: '6px 16px',
-          borderRadius: '50px',
-          background: 'rgba(99, 102, 241, 0.2)',
-          border: '1px solid rgba(99, 102, 241, 0.4)',
-          color: '#a5b4fc',
-          fontSize: '13px',
-          fontWeight: 600,
-          marginBottom: '14px',
-          letterSpacing: '0.5px'
-        }}>
-          🚀 DEVOPS 2 • DEPLOYMENT STATUS
-        </div>
-        <h1 style={{
-          fontSize: '2.5rem',
-          fontWeight: 800,
-          background: 'linear-gradient(to right, #38bdf8, #818cf8, #c084fc)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          marginBottom: '10px'
-        }}>
-          QLTS AGU — Quản Lý Tuyển Sinh
-        </h1>
-        <p style={{ color: '#94a3b8', fontSize: '1.05rem', maxWidth: '650px', margin: '0 auto' }}>
-          Dự án Next.js đã được cấu hình hoàn chỉnh cho DevOps 2 (Quản lý .env, kết nối MongoDB, Gemini AI & sẵn sàng Deploy Vercel/Render).
-        </p>
-      </header>
-
-      {/* Live System Health Section */}
-      <section style={{
-        background: 'rgba(30, 41, 59, 0.7)',
-        backdropFilter: 'blur(12px)',
-        borderRadius: '20px',
-        padding: '28px',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-      }}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '15px',
-          marginBottom: '24px'
-        }}>
-          <div>
-            <h2 style={{ fontSize: '1.35rem', fontWeight: 700, color: '#f8fafc' }}>
-              Trạng thái hệ thống (Live Environment & Health)
-            </h2>
-            <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginTop: '4px' }}>
-              Kiểm tra tình trạng nạp biến môi trường và kết nối dữ liệu máy chủ
-            </p>
+    <main className={styles.page}>
+      {/* PHẦN GIỚI THIỆU */}
+      <section className={styles.hero}>
+        <div className={styles.heroContent}>
+          <div className={styles.eyebrow}>
+            TRƯỜNG ĐẠI HỌC AN GIANG
           </div>
-          <button
-            onClick={checkHealth}
-            disabled={loading}
-            style={{
-              padding: '10px 22px',
-              borderRadius: '12px',
-              border: 'none',
-              background: loading ? '#475569' : 'linear-gradient(135deg, #0284c7, #6366f1)',
-              color: '#ffffff',
-              fontSize: '14px',
-              fontWeight: 600,
-              cursor: loading ? 'not-allowed' : 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: '0 4px 14px rgba(99, 102, 241, 0.4)'
-            }}
-          >
-            {loading ? 'Đang kiểm tra...' : '🔄 Kiểm tra lại (Refresh)'}
-          </button>
+
+          <h1>
+            CỔNG THÔNG TIN
+            <span>TUYỂN SINH AGU</span>
+          </h1>
+
+          <p className={styles.heroDescription}>
+            Chào mừng bạn đến với hệ thống quản lý tuyển sinh trực tuyến
+            của Trường Đại học An Giang. Tra cứu thông tin, đăng ký và
+            theo dõi hồ sơ xét tuyển thuận tiện trên một nền tảng.
+          </p>
+
+          <div className={styles.heroActions}>
+            <Link href="/nop-ho-so" className={styles.primaryButton}>
+              📝 Nộp hồ sơ ngay
+            </Link>
+
+            <Link href="/tra-cuu" className={styles.secondaryButton}>
+              🔎 Tra cứu hồ sơ
+            </Link>
+          </div>
+
+          <div className={styles.heroNote}>
+            <span className={styles.noteDot}></span>
+            Hệ thống hỗ trợ đăng ký và tra cứu hồ sơ trực tuyến
+          </div>
         </div>
 
-        {error && (
-          <div style={{
-            padding: '16px',
-            borderRadius: '12px',
-            background: 'rgba(239, 68, 68, 0.15)',
-            border: '1px solid rgba(239, 68, 68, 0.3)',
-            color: '#fca5a5',
-            marginBottom: '20px',
-            fontSize: '14px'
-          }}>
-            ❌ Lỗi: {error}
+        <div className={styles.heroVisual}>
+          <div className={styles.visualCircle}>
+            <div className={styles.visualIcon}>🎓</div>
+            <div className={styles.visualTitle}>AGU</div>
+            <div className={styles.visualSubtitle}>
+              AN GIANG UNIVERSITY
+            </div>
           </div>
-        )}
 
-        {/* Status Cards Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '18px'
-        }}>
-          {/* Next.js Server Card */}
-          <div style={{
-            background: 'rgba(15, 23, 42, 0.6)',
-            borderRadius: '16px',
-            padding: '20px',
-            border: '1px solid rgba(255, 255, 255, 0.07)'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#94a3b8', fontWeight: 500 }}>Next.js Server</span>
-              <span style={{
-                fontSize: '12px',
-                padding: '4px 10px',
-                borderRadius: '20px',
-                background: 'rgba(16, 185, 129, 0.15)',
-                color: '#34d399',
-                border: '1px solid rgba(16, 185, 129, 0.3)',
-                fontWeight: 600
-              }}>
-                ● ONLINE
-              </span>
+          <div className={styles.floatingCard}>
+            <span>📚</span>
+            <div>
+              <strong>Hành trình tri thức</strong>
+              <small>Bắt đầu từ hôm nay</small>
             </div>
-            <div style={{ marginTop: '12px', fontSize: '1.1rem', fontWeight: 700, color: '#f1f5f9' }}>
-              App Router v15+
-            </div>
-            <p style={{ marginTop: '6px', fontSize: '13px', color: '#64748b' }}>
-              Đã tối ưu hóa cho Vercel & Node.js
+          </div>
+        </div>
+      </section>
+
+      {/* DỊCH VỤ TRỰC TUYẾN */}
+      <section className={styles.introSection}>
+        <div className={styles.sectionHeading}>
+          <span className={styles.sectionLabel}>
+            DỊCH VỤ TRỰC TUYẾN
+          </span>
+
+          <h2>Đồng hành cùng bạn trong mùa tuyển sinh</h2>
+
+          <p>
+            Các chức năng cần thiết được tích hợp để bạn dễ dàng thực hiện
+            và theo dõi quá trình đăng ký xét tuyển.
+          </p>
+        </div>
+
+        <div className={styles.featureGrid}>
+          {features.map((item) => (
+            <article className={styles.featureCard} key={item.title}>
+              <div className={styles.featureIcon}>{item.icon}</div>
+
+              <h3>{item.title}</h3>
+
+              <p>{item.description}</p>
+
+              <Link href={item.href} className={styles.featureLink}>
+                {item.action} <span>→</span>
+              </Link>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* HƯỚNG DẪN ĐĂNG KÝ */}
+      <section className={styles.stepsSection}>
+        <div className={styles.sectionHeading}>
+          <span className={styles.sectionLabel}>HƯỚNG DẪN</span>
+
+          <h2>Các bước đăng ký hồ sơ</h2>
+
+          <p>
+            Thực hiện theo các bước đơn giản để gửi và theo dõi hồ sơ
+            của bạn.
+          </p>
+        </div>
+
+        <div className={styles.stepsGrid}>
+          <div className={styles.stepCard}>
+            <div className={styles.stepNumber}>01</div>
+            <h3>Đăng ký tài khoản</h3>
+            <p>Tạo tài khoản để sử dụng các chức năng của hệ thống.</p>
+          </div>
+
+          <div className={styles.stepCard}>
+            <div className={styles.stepNumber}>02</div>
+            <h3>Điền thông tin</h3>
+            <p>
+              Cung cấp thông tin cá nhân và thông tin đăng ký xét tuyển.
             </p>
           </div>
 
-          {/* MongoDB Card */}
-          <div style={{
-            background: 'rgba(15, 23, 42, 0.6)',
-            borderRadius: '16px',
-            padding: '20px',
-            border: '1px solid rgba(255, 255, 255, 0.07)'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#94a3b8', fontWeight: 500 }}>MongoDB Database</span>
-              <span style={{
-                fontSize: '12px',
-                padding: '4px 10px',
-                borderRadius: '20px',
-                background: healthData?.database?.status === 'connected'
-                  ? 'rgba(16, 185, 129, 0.15)'
-                  : 'rgba(245, 158, 11, 0.15)',
-                color: healthData?.database?.status === 'connected' ? '#34d399' : '#fbbf24',
-                border: `1px solid ${healthData?.database?.status === 'connected' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`,
-                fontWeight: 600
-              }}>
-                {healthData?.database?.status === 'connected' ? '● ĐÃ KẾT NỐI' : '○ CHỜ CẤU HÌNH'}
-              </span>
-            </div>
-            <div style={{ marginTop: '12px', fontSize: '1.1rem', fontWeight: 700, color: '#f1f5f9' }}>
-              {healthData?.environment?.hasMongoUri ? 'MONGODB_URI: Đã nạp' : 'MONGODB_URI: Chưa có'}
-            </div>
-            <p style={{ marginTop: '6px', fontSize: '13px', color: '#64748b' }}>
-              {healthData?.database?.message || 'Đang chờ điền biến môi trường...'}
+          <div className={styles.stepCard}>
+            <div className={styles.stepNumber}>03</div>
+            <h3>Gửi hồ sơ</h3>
+            <p>
+              Kiểm tra thông tin và gửi hồ sơ qua hệ thống trực tuyến.
             </p>
           </div>
 
-          {/* Gemini AI Card */}
-          <div style={{
-            background: 'rgba(15, 23, 42, 0.6)',
-            borderRadius: '16px',
-            padding: '20px',
-            border: '1px solid rgba(255, 255, 255, 0.07)'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#94a3b8', fontWeight: 500 }}>Google Gemini API</span>
-              <span style={{
-                fontSize: '12px',
-                padding: '4px 10px',
-                borderRadius: '20px',
-                background: healthData?.environment?.hasGeminiApiKey
-                  ? 'rgba(16, 185, 129, 0.15)'
-                  : 'rgba(245, 158, 11, 0.15)',
-                color: healthData?.environment?.hasGeminiApiKey ? '#34d399' : '#fbbf24',
-                border: `1px solid ${healthData?.environment?.hasGeminiApiKey ? 'rgba(16, 185, 129, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`,
-                fontWeight: 600
-              }}>
-                {healthData?.environment?.hasGeminiApiKey ? '● SẴN SÀNG' : '○ CHỜ KEY'}
-              </span>
-            </div>
-            <div style={{ marginTop: '12px', fontSize: '1.1rem', fontWeight: 700, color: '#f1f5f9' }}>
-              SDK: @google/genai
-            </div>
-            <p style={{ marginTop: '6px', fontSize: '13px', color: '#64748b' }}>
-              {healthData?.environment?.hasGeminiApiKey ? 'API Key đã được tải vào môi trường' : 'Cần điền GEMINI_API_KEY vào .env'}
+          <div className={styles.stepCard}>
+            <div className={styles.stepNumber}>04</div>
+            <h3>Theo dõi kết quả</h3>
+            <p>
+              Sử dụng chức năng tra cứu để theo dõi tình trạng hồ sơ.
             </p>
           </div>
         </div>
       </section>
 
-      {/* DevOps 2 Checklist & Guide */}
-      <section style={{
-        background: 'rgba(30, 41, 59, 0.7)',
-        backdropFilter: 'blur(12px)',
-        borderRadius: '20px',
-        padding: '28px',
-        border: '1px solid rgba(255, 255, 255, 0.1)'
-      }}>
-        <h2 style={{ fontSize: '1.35rem', fontWeight: 700, marginBottom: '16px', color: '#f8fafc' }}>
-          📋 Nhiệm vụ DevOps 2 đã hoàn thiện
-        </h2>
-        
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '14px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ color: '#10b981', fontWeight: 'bold' }}>✔</span>
-            <span>Khởi tạo cấu trúc dự án Next.js (App Router, JavaScript, Mongoose, @google/genai).</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ color: '#10b981', fontWeight: 'bold' }}>✔</span>
-            <span>Quản lý bảo mật: Đã tạo <code>.env.example</code> (mẫu) và <code>.env.local</code> (chứa key thật).</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ color: '#10b981', fontWeight: 'bold' }}>✔</span>
-            <span>Bảo vệ Git: Cập nhật <code>.gitignore</code> để ngăn chặn lộ lọt file <code>.env</code> lên GitHub.</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ color: '#10b981', fontWeight: 'bold' }}>✔</span>
-            <span>Tạo API Health Check tại <code>/api/health</code> để nghiệm thu kết nối MongoDB và Gemini Key khi deploy.</span>
-          </div>
+      {/* KÊU GỌI ĐĂNG KÝ */}
+      <section className={styles.callout}>
+        <div>
+          <span className={styles.sectionLabel}>
+            CỔNG TUYỂN SINH AGU
+          </span>
+
+          <h2>Sẵn sàng bắt đầu hành trình của bạn?</h2>
+
+          <p>
+            Truy cập hệ thống để đăng ký hoặc tra cứu hồ sơ tuyển sinh.
+          </p>
+        </div>
+
+        <div className={styles.calloutActions}>
+          <Link href="/dang-ky" className={styles.calloutPrimary}>
+            Tạo tài khoản
+          </Link>
+
+          <Link href="/tra-cuu" className={styles.calloutSecondary}>
+            Tra cứu hồ sơ
+          </Link>
         </div>
       </section>
 
-      {/* Next Steps for Deploy */}
-      <section style={{
-        background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(49, 46, 129, 0.6))',
-        borderRadius: '20px',
-        padding: '28px',
-        border: '1px solid rgba(99, 102, 241, 0.3)'
-      }}>
-        <h2 style={{ fontSize: '1.35rem', fontWeight: 700, marginBottom: '12px', color: '#f8fafc' }}>
-          🚀 Hướng dẫn bước tiếp theo: Deploy lên Vercel
-        </h2>
-        <ol style={{ paddingLeft: '20px', color: '#cbd5e1', lineHeight: '1.8', fontSize: '14px' }}>
-          <li>Điền chuỗi MongoDB và Gemini API Key vào file <code>.env.local</code> ở máy của bạn.</li>
-          <li>Đẩy code lên repository GitHub cá nhân/nhóm (chạy: <code>git add .</code>, <code>git commit -m "feat: setup nextjs devops"</code>, <code>git push</code>).</li>
-          <li>Đăng nhập <a href="https://vercel.com" target="_blank" rel="noreferrer" style={{ color: '#38bdf8', textDecoration: 'underline' }}>Vercel.com</a> &gt; <strong>Import Git Repository</strong>.</li>
-          <li>Trong mục <strong>Environment Variables</strong> trên Vercel, thêm 2 biến:
-            <ul style={{ paddingLeft: '20px', marginTop: '6px' }}>
-              <li><code>MONGODB_URI</code>: <em>dán link kết nối MongoDB</em></li>
-              <li><code>GEMINI_API_KEY</code>: <em>dán API Key Gemini</em></li>
-            </ul>
-          </li>
-          <li>Nhấn <strong>Deploy</strong> để nhận link web công khai nộp cho nhóm!</li>
-        </ol>
-      </section>
+      {/* FOOTER */}
+      <footer className={styles.footer}>
+        <strong>TRƯỜNG ĐẠI HỌC AN GIANG</strong>
+
+        <span>Cổng thông tin tuyển sinh trực tuyến</span>
+
+        <small>
+          © 2026 AGU. Hệ thống quản lý tuyển sinh.
+        </small>
+      </footer>
     </main>
   );
 }

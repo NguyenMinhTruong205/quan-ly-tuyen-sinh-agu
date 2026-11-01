@@ -1,29 +1,36 @@
 const express = require('express');
 const router = express.Router();
 
+// ✅ Bước 1: Import ĐỦ các hàm, bao gồm cả dangXuat
 const {
   dangKy,
   xacThucOTP,
   dangNhap,
   guiLaiOTP,
   yeuCauOTPDangNhap,
-  xacThucOTPDangNhap
+  xacThucOTPDangNhap,
+  dangXuat // ← Thêm dòng này
 } = require('../controllers/authController');
 
-// Đăng ký tài khoản
+// Đăng ký tài khoản mới
 router.post('/dang-ky', dangKy);
 
-// Xác thực OTP
+// Xác thực OTP sau khi đăng ký
 router.post('/xac-thuc-otp', xacThucOTP);
 
-// Đăng nhập
+// Đăng nhập thông thường (email + mật khẩu)
 router.post('/dang-nhap', dangNhap);
 
+// Gửi lại mã OTP
 router.post('/gui-lai-otp', guiLaiOTP);
-// Yêu cầu OTP để đăng nhập
+
+// Yêu cầu tạo OTP cho bước đăng nhập
 router.post('/yeu-cau-otp-dang-nhap', yeuCauOTPDangNhap);
 
-// Xác thực OTP và đăng nhập
-router.post('/dang-nhap-otp', xacThucOTPDangNhap);
+// ✅ Đường dẫn xác thực OTP đăng nhập — ĐỒNG BỘ tên với Frontend
+router.post('/xac-thuc-otp-dang-nhap', xacThucOTPDangNhap);
+
+// ✅ Đăng xuất — ĐÚNG vị trí trước module.exports
+router.post('/dang-xuat', dangXuat);
 
 module.exports = router;
