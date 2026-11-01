@@ -21,13 +21,6 @@ Hệ thống hỗ trợ quản lý toàn bộ quy trình đào tạo sau đại 
 
 ---
 
-## 🔗 Liên kết Repository (Phân hệ được phân công)
-
-* **Tổ chức (Organization):** https://github.com/Ten-Organization-Cua-Nhom
-* **Repository chính của Phân hệ:** https://github.com/Ten-Organization-Cua-Nhom/Ten-Repo-Phan-He
-
----
-
 ## 🏗 Cấu trúc thư mục dự án
 
 ```text
