@@ -1,10 +1,34 @@
-# 🎓 HỆ THỐNG QUẢN LÝ TUYỂN SINH AGU (QLTSAGU)
+# 🎓 HỆ THỐNG QUẢN LÝ ĐÀO TẠO SAU ĐẠI HỌC (AGU)
 
-Hệ thống hỗ trợ thí sinh đăng ký, tra cứu hồ sơ tuyển sinh trực tuyến và quản trị viên/cán bộ xét duyệt hồ sơ tự động hóa cho Trường Đại học An Giang (AGU).
+## 📌 Giới thiệu dự án
+
+Hệ thống hỗ trợ quản lý toàn bộ quy trình đào tạo sau đại học (Thạc sĩ, Tiến sĩ), bao gồm các phân hệ: Xét tuyển & Nhập học, Quản lý Chương trình đào tạo, Lập kế hoạch & Thời khóa biểu, Quản lý Điểm & Học phí, và Xét Tốt nghiệp.
 
 ---
 
-## 🏗 Cấu Trúc Dự Án (Monorepo)
+## 👥 Danh sách thành viên & Phân công vai trò
+
+| STT | Mã sinh viên | Họ và tên | Vai trò phân công | Email |
+| :---: | :--- | :--- | :--- | :--- |
+| **1** | `DPM235491` | Nguyễn Minh Trường | **Product Owner (PO) / Team Lead** | `truong_dpm235491@student.agu.edu.vn` |
+| **2** | `DPM235481` | Đặng Kim Thảo | **Backend Developer** | `thao_dpm235481@student.agu.edu.vn` |
+| **2** | `DPM235497` | Trần Thị Thúy Vi | **Backend Developer** | `vi_dpm235497@student.agu.edu.vn` |
+| **3** | `DPM235503` | Lê Thị Kim Yến | **Frontend / Mobile Developer** | `yen_dpm235503@student.agu.edu.vn` |
+| **3** | `DPM235461` | Trương Thị Huỳnh Như | **Frontend / Mobile Developer** | `nhu_dpm235461@student.agu.edu.vn` |
+| **4** | `DPM235405` | Lê Thị Kim Anh | **DevOps / Cloud Engineer** | `anh_dpm235405@student.agu.edu.vn` |
+| **4** | `DPM235515` | Lê Thị Yến Nhi | **DevOps / Cloud Engineer** | `nhi_dpm235515@student.agu.edu.vn` |
+| **5** | `DPM235442` | Lương Gia Linh | **QA / Security & Data Specialist** | `linh_dpm235442@student.agu.edu.vn` |
+
+---
+
+## 🔗 Liên kết Repository (Phân hệ được phân công)
+
+* **Tổ chức (Organization):** https://github.com/Ten-Organization-Cua-Nhom
+* **Repository chính của Phân hệ:** https://github.com/Ten-Organization-Cua-Nhom/Ten-Repo-Phan-He
+
+---
+
+## 🏗 Cấu trúc thư mục dự án
 
 ```text
 QLTSAGU/
@@ -26,4 +50,4 @@ QLTSAGU/
 │   └── package.json
 │
 ├── .gitignore                # Chặn rò rỉ file .env và node_modules lên GitHub
-└── README.md                 # Tài liệu hướng dẫn dự án
+└── README.md                 # Tài liệu hướng dẫn dự án & Phân công nhóm
