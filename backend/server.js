@@ -12,17 +12,18 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // === Middleware ===
-// Cấu hình CORS rõ ràng cho phép Frontend truy cập
+// Cấu hình CORS mở linh hoạt cho phép Vercel, Localhost và các domain khác kết nối
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: true, // Tự động chấp nhận domain gửi request đến (bao gồm cả Vercel)
   credentials: true
 }));
+
 app.use(express.json());
 
 // === Đăng ký đường dẫn API ===
-app.use('/api/auth', authRoutes);        // Xác thực & phân quyền
-app.use('/api/ho-so', hoSoRoutes);        // Quản lý hồ sơ tuyển sinh
-app.use('/api/chatbot', chatbotRoutes);   // Chatbot hỗ trợ
+app.use('/api/auth', authRoutes);        // Xác thực & phân quyền (/api/auth/dang-ky, /api/auth/dang-nhap)
+app.use('/api/ho-so', hoSoRoutes);       // Quản lý hồ sơ tuyển sinh (/api/ho-so/tra-cuu)
+app.use('/api/chatbot', chatbotRoutes);  // Chatbot hỗ trợ
 
 // === Kết nối MongoDB ===
 const connectDB = async () => {
