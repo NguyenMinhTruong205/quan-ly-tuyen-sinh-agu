@@ -2,7 +2,10 @@
 
 import { useState } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation'; // Thêm công cụ điều hướng của Next.js
+import { useRouter } from 'next/navigation';
+
+// Định nghĩa API_BASE động dựa vào biến môi trường Vercel hoặc URL Render
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://quan-ly-tuyen-sinh-agu.onrender.com';
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -11,7 +14,7 @@ export default function RegisterPage() {
     matKhau: ''
   });
   const [loading, setLoading] = useState(false);
-  const router = useRouter(); // Khởi tạo router
+  const router = useRouter();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,7 +24,7 @@ export default function RegisterPage() {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await axios.post('http://localhost:5000/api/auth/dang-ky', {
+      const response = await axios.post(`${API_BASE}/api/auth/dang-ky`, {
         hoTen: form.hoTen,
         email: form.email,
         matKhau: form.matKhau
@@ -73,8 +76,8 @@ export default function RegisterPage() {
 
           <div>
             <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '5px', color: '#333' }}>Mật khẩu:</label>
-            <input
-            type="password" 
+            <input 
+              type="password" 
               name="matKhau" 
               placeholder="Nhập mật khẩu..." 
               value={form.matKhau} 
