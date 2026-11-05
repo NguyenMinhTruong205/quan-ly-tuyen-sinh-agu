@@ -4,8 +4,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-// Định nghĩa API_BASE động dựa vào biến môi trường Vercel hoặc URL Render
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://quan-ly-tuyen-sinh-agu.onrender.com';
+const rawUrl = process.env.NEXT_PUBLIC_API_URL || 'https://quan-ly-tuyen-sinh-agu.onrender.com';
+const API_BASE = rawUrl.replace(/^https?:\/+(?!\/)/, 'https://').replace(/\/+$/, '');
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
