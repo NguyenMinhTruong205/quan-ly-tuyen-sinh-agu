@@ -4,8 +4,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-const rawUrl = process.env.NEXT_PUBLIC_API_URL || 'https://quan-ly-tuyen-sinh-agu.onrender.com';
-const API_BASE = rawUrl.replace(/^https?:\/+(?!\/)/, 'https://').replace(/\/+$/, '');
+// Khai báo trực tiếp Domain Render (có fallback an toàn)
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || 'https://quan-ly-tuyen-sinh-agu.onrender.com').replace(/\/+$/, '');
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -24,6 +24,8 @@ export default function RegisterPage() {
     e.preventDefault();
     try {
       setLoading(true);
+
+      // Gọi chính xác API tới Backend Render
       const response = await axios.post(`${API_BASE}/api/auth/dang-ky`, {
         hoTen: form.hoTen,
         email: form.email,
@@ -31,8 +33,6 @@ export default function RegisterPage() {
       });
 
       alert('Đăng ký tài khoản thành công! Mã OTP demo của bạn là: ' + response.data.otpDemo);
-      
-      // Tự động chuyển hướng sang trang Xác thực OTP
       router.push('/xac-thuc-otp');
     } catch (err) {
       console.error('Lỗi đăng ký chi tiết:', err.response?.data);
