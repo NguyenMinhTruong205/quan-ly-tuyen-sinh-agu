@@ -11,12 +11,28 @@ const chatbotRoutes = require('./routes/chatbotRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+
 // === Middleware ===
-// Cấu hình CORS mở linh hoạt cho phép Vercel, Localhost và các domain khác kết nối
-app.use(cors({
-  origin: true, // Tự động chấp nhận domain gửi request đến (bao gồm cả Vercel)
-  credentials: true
-}));
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://quan-ly-tuyen-sinh-agu-omega.vercel.app'
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    console.log('CORS blocked origin:', origin);
+    return callback(new Error('Origin not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
