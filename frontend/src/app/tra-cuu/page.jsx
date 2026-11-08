@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -7,46 +6,14 @@ import axios from "axios";
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://quan-ly-tuyen-sinh-agu-1.onrender.com";
 
 const STATUS_MAP = {
-  "Chờ thẩm định": {
-    label: "Chờ thẩm định",
-    bg: "#fff7df",
-    color: "#986313",
-  },
-  cho_tham_dinh: {
-    label: "Chờ thẩm định",
-    bg: "#fff7df",
-    color: "#986313",
-  },
-  "Cần bổ sung hồ sơ": {
-    label: "Cần bổ sung hồ sơ",
-    bg: "#fff0f1",
-    color: "#b4233b",
-  },
-  can_bo_sung: {
-    label: "Cần bổ sung hồ sơ",
-    bg: "#fff0f1",
-    color: "#b4233b",
-  },
-  "Không đạt": {
-    label: "Không đạt",
-    bg: "#fff0f0",
-    color: "#b4233b",
-  },
-  khong_dat: {
-    label: "Không đạt",
-    bg: "#fff0f0",
-    color: "#b4233b",
-  },
-  "Trúng tuyển": {
-    label: "Trúng tuyển",
-    bg: "#e8f9ec",
-    color: "#21743a",
-  },
-  trung_tuyen: {
-    label: "Trúng tuyển",
-    bg: "#e8f9ec",
-    color: "#21743a",
-  },
+  "Chờ thẩm định": { label: "Chờ thẩm định", bg: "#fff7df", color: "#986313" },
+  cho_tham_dinh: { label: "Chờ thẩm định", bg: "#fff7df", color: "#986313" },
+  "Cần bổ sung hồ sơ": { label: "Cần bổ sung hồ sơ", bg: "#fff0f1", color: "#b4233b" },
+  can_bo_sung: { label: "Cần bổ sung hồ sơ", bg: "#fff0f1", color: "#b4233b" },
+  "Không đạt": { label: "Không đạt", bg: "#fff0f0", color: "#b4233b" },
+  khong_dat: { label: "Không đạt", bg: "#fff0f0", color: "#b4233b" },
+  "Trúng tuyển": { label: "Trúng tuyển", bg: "#e8f9ec", color: "#21743a" },
+  trung_tuyen: { label: "Trúng tuyển", bg: "#e8f9ec", color: "#21743a" },
 };
 
 export default function TraCuuPage() {
@@ -79,27 +46,44 @@ export default function TraCuuPage() {
         }
       );
 
-      const data = response.data?.data;
+      console.log("Dữ liệu tra cứu Backend trả về:", response.data);
 
-      if (!data || typeof data !== "object" || Array.isArray(data)) {
-        setError(
-          response.data?.message || "Không tìm thấy hồ sơ phù hợp."
-        );
+      // ✅ Linh hoạt lấy dữ liệu hoSo từ mọi kiểu response Backend trả về
+      let rawData = response.data?.data || response.data?.hoSo || response.data;
+
+      // Nếu Backend trả về mảng danh sách hồ sơ, lấy phần tử đầu tiên
+      if (Array.isArray(rawData)) {
+        rawData = rawData[0];
+      }
+
+      if (!rawData || typeof rawData !== "object" || Object.keys(rawData).length === 0) {
+        setError(response.data?.message || "Không tìm thấy hồ sơ phù hợp.");
         return;
       }
 
-      setResult(data);
+      // ✅ Chuẩn hóa map linh hoạt các trường dữ liệu
+      const formattedData = {
+        hoTen: rawData.hoTen || rawData.user?.hoTen || "Thí sinh",
+        maHoSo: rawData.maHoSo || rawData._id?.slice(-6).toUpperCase() || "Đã cấp",
+        cccd: rawData.cccd || rawData.user?.cccd || value,
+        nganhDangKy: rawData.nganhDangKy || rawData.nganhXetTuyen || "Công nghệ thông tin",
+        diemXetTuyen: rawData.diemXetTuyen ?? rawData.tongDiem ?? "Chưa cập nhật",
+        trangThai: rawData.trangThai || rawData.status || "Chờ thẩm định",
+        mshv: rawData.mshv || rawData.maSinhVien || "",
+        emailSinhVien: rawData.emailSinhVien || rawData.email || "",
+        ghiChuThamDinh: rawData.ghiChuThamDinh || rawData.ghiChu || ""
+      };
+
+      setResult(formattedData);
     } catch (err) {
       console.error("Lỗi tra cứu hồ sơ:", err);
 
       if (err.response?.data?.message) {
         setError(err.response.data.message);
       } else if (err.response) {
-        setError("Máy chủ không thể xử lý yêu cầu tra cứu.");
+        setError("Máy chủ không thể tìm thấy hồ sơ với thông tin vừa nhập.");
       } else {
-        setError(
-          "Không kết nối được Backend. Vui lòng kiểm tra máy chủ tại cổng 5000."
-        );
+        setError("Không kết nối được Backend. Vui lòng thử lại sau.");
       }
     } finally {
       setLoading(false);
@@ -108,9 +92,9 @@ export default function TraCuuPage() {
 
   const status = result
     ? STATUS_MAP[result.trangThai] || {
-        label: result.trangThai || "Chưa cập nhật",
-        bg: "#eef2f7",
-        color: "#526176",
+        label: result.trangThai || "Chờ thẩm định",
+        bg: "#fff7df",
+        color: "#986313",
       }
     : null;
 
@@ -341,105 +325,6 @@ export default function TraCuuPage() {
           font-family: Arial, Helvetica, sans-serif;
         }
 
-        /* MENU */
-        .site-header {
-          position: sticky;
-          top: 0;
-          z-index: 100;
-          background: #ffffff;
-          border-bottom: 1px solid #e7ebf3;
-          box-shadow: 0 3px 15px rgba(28, 48, 81, 0.05);
-        }
-
-        .navbar {
-          width: min(1280px, 92%);
-          min-height: 82px;
-          margin: 0 auto;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 24px;
-        }
-
-        .brand {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          color: #2854a1;
-          text-decoration: none;
-          min-width: 0;
-        }
-
-        .brand-logo {
-          width: 48px;
-          height: 48px;
-          flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #ffffff;
-          background: #243b68;
-          border-radius: 13px;
-        }
-
-        .brand-text {
-          display: flex;
-          flex-direction: column;
-          gap: 5px;
-        }
-
-        .brand-text strong {
-          font-size: 16px;
-          line-height: 1.35;
-          letter-spacing: 0.2px;
-        }
-
-        .brand-text small {
-          color: #78869d;
-          font-size: 10px;
-          font-weight: 700;
-          letter-spacing: 1px;
-        }
-
-        .nav-links {
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-          gap: 7px;
-        }
-
-        .nav-link {
-          min-height: 43px;
-          padding: 0 14px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 7px;
-          border-radius: 10px;
-          color: #394960;
-          text-decoration: none;
-          white-space: nowrap;
-          font-size: 14px;
-          font-weight: 600;
-          transition: 0.2s ease;
-        }
-
-        .nav-link:hover {
-          background: #f1f4fa;
-          color: #2854a1;
-        }
-
-        .nav-link.active {
-          background: #edf2ff;
-          color: #2854a1;
-        }
-
-        .nav-icon {
-          font-size: 20px;
-          line-height: 1;
-        }
-
-        /* HERO */
         .hero {
           color: #ffffff;
           background: linear-gradient(115deg, #243b68, #344f80);
@@ -472,7 +357,6 @@ export default function TraCuuPage() {
           line-height: 1.7;
         }
 
-        /* FORM */
         .main-content {
           flex: 1;
           width: min(800px, 92%);
@@ -619,7 +503,6 @@ export default function TraCuuPage() {
           margin: 5px 0 0;
         }
 
-        /* KẾT QUẢ */
         .result-card {
           margin-top: 25px;
           animation: fadeIn 0.3s ease;
@@ -717,210 +600,4 @@ export default function TraCuuPage() {
         .failure-box {
           border: 1px solid #f4caca;
           background: #fff5f5;
-          color: #a82d3b;
-        }
-
-        .note-box p,
-        .success-box p,
-        .warning-box p,
-        .failure-box p {
-          margin: 5px 0 0;
-        }
-
-        .privacy-note {
-          margin: 23px 0 0;
-          color: #8b96a8;
-          font-size: 11px;
-          line-height: 1.7;
-        }
-
-        .help-box {
-          display: flex;
-          align-items: flex-start;
-          gap: 12px;
-          margin-top: 23px;
-          padding: 17px;
-          border: 1px solid #dce5f3;
-          border-radius: 12px;
-          background: #fafbff;
-          color: #697991;
-          font-size: 13px;
-          line-height: 1.7;
-        }
-
-        .help-box p {
-          margin: 0;
-        }
-
-        .help-icon {
-          width: 23px;
-          height: 23px;
-          flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 50%;
-          background: #e8effd;
-          color: #2854a1;
-          font-weight: 800;
-        }
-
-        /* FOOTER */
-        .footer {
-          padding: 26px 16px;
-          border-top: 1px solid #e4e9f2;
-          background: #ffffff;
-          text-align: center;
-          color: #7c899e;
-          font-size: 12px;
-          line-height: 1.8;
-        }
-
-        .footer-brand {
-          color: #345782;
-          font-size: 13px;
-          font-weight: 800;
-          letter-spacing: 0.5px;
-        }
-
-        .footer p {
-          margin: 5px 0;
-        }
-
-        @keyframes spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(8px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @media (max-width: 760px) {
-          .navbar {
-            width: 94%;
-            padding: 13px 0;
-            flex-direction: column;
-            align-items: stretch;
-            gap: 12px;
-          }
-
-          .brand-text strong {
-            font-size: 14px;
-          }
-
-          .nav-links {
-            justify-content: flex-start;
-            flex-wrap: wrap;
-          }
-
-          .nav-link {
-            min-height: 39px;
-            padding: 0 10px;
-            font-size: 12px;
-          }
-
-          .hero-inner {
-            padding: 25px 0;
-          }
-
-          .main-content {
-            margin-top: 25px;
-          }
-
-          .search-card,
-          .result-card {
-            padding: 22px;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .nav-links {
-            gap: 3px;
-          }
-
-          .nav-link {
-            gap: 4px;
-            padding: 0 8px;
-            font-size: 11px;
-          }
-
-          .search-row {
-            flex-direction: column;
-          }
-
-          .search-row input {
-            width: 100%;
-            flex: auto;
-          }
-
-          .search-row button {
-            width: 100%;
-          }
-
-          .info-grid {
-            grid-template-columns: 1fr;
-            gap: 18px;
-          }
-
-          .section-heading h2,
-          .result-header h2 {
-            font-size: 18px;
-          }
-        }
-      `}</style>
-    </div>
-  );
-}
-
-function InfoItem({ label, value, highlight = false, mask = false }) {
-  const displayValue =
-    value === null || value === undefined || value === ""
-      ? "Chưa cập nhật"
-      : String(value);
-
-  const safeValue =
-    mask &&
-    displayValue !== "Chưa cập nhật" &&
-    displayValue.length > 4
-      ? "*".repeat(displayValue.length - 4) + displayValue.slice(-4)
-      : displayValue;
-
-  return (
-    <div className="info-item">
-      <div className="info-label">{label}</div>
-      <div className={`info-value ${highlight ? "highlight" : ""}`}>
-        {safeValue}
-      </div>
-
-      <style jsx>{`
-        .info-label {
-          margin-bottom: 7px;
-          color: #8491a5;
-          font-size: 12px;
-        }
-
-        .info-value {
-          color: #263d5e;
-          font-size: 14px;
-          font-weight: 600;
-          line-height: 1.6;
-          overflow-wrap: anywhere;
-        }
-
-        .info-value.highlight {
-          color: #285ba5;
-          font-weight: 800;
-        }
-      `}</style>
-    </div>
-  );
-}
+          color: #a82d3b
