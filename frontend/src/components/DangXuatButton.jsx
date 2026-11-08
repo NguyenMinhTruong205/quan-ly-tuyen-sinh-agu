@@ -2,6 +2,9 @@
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
+// ✅ Sử dụng biến môi trường API_URL chuẩn
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://quan-ly-tuyen-sinh-agu-1.onrender.com';
+
 export default function DangXuatButton() {
   const router = useRouter();
 
@@ -11,10 +14,10 @@ export default function DangXuatButton() {
     try {
       const token = localStorage.getItem('token');
       
-      // Gọi API đăng xuất (nếu có)
+      // ✅ Thay đường dẫn localhost:5000 bằng API_URL
       if (token) {
         await axios.post(
-          'http://localhost:5000/api/auth/dang-xuat',
+          `${API_URL}/api/auth/dang-xuat`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );

@@ -1,9 +1,11 @@
-
 'use client';
 
 import { Suspense, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
+
+// ✅ Tự động dùng biến môi trường API_URL trên Render/Vercel
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://quan-ly-tuyen-sinh-agu-1.onrender.com';
 
 function XacThucOTPForm() {
   const [email, setEmail] = useState('');
@@ -28,8 +30,9 @@ function XacThucOTPForm() {
     try {
       setLoading(true);
 
+      // ✅ Đã cập nhật endpoint từ localhost thành API_URL chuẩn
       const res = await axios.post(
-        'http://localhost:5000/api/auth/xac-thuc-otp-dang-nhap',
+        `${API_URL}/api/auth/xac-thuc-otp-dang-nhap`,
         {
           email: email.trim(),
           otp: otp.trim()
@@ -60,13 +63,13 @@ function XacThucOTPForm() {
           id: userId,
           hoTen: user.hoTen,
           email: user.email,
-          vaiTro: user.vaiTro
+          vaiTro: user.vaiTro || user.role || 'thi_sinh'
         })
       );
 
       alert(`Đăng nhập thành công! Xin chào ${user.hoTen || 'Bạn'}`);
 
-      if (user.vaiTro === 'can_bo') {
+      if (user.vaiTro === 'can_bo' || user.role === 'can_bo') {
         router.push('/can-bo/dashboard');
       } else {
         router.push('/nop-ho-so');

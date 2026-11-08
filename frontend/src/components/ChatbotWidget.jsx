@@ -2,6 +2,9 @@
 
 import { useState, useRef, useEffect } from 'react';
 
+// ✅ Chuẩn hóa API_BASE kết nối với Backend Render
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://quan-ly-tuyen-sinh-agu-1.onrender.com';
+
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -29,9 +32,8 @@ export default function ChatbotWidget() {
     setIsLoading(true);
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-      
-      const res = await fetch(`${API_URL}/api/chatbot/ask`, {
+      // ✅ Sửa đường dẫn API chuẩn không bị trùng /api/api
+      const res = await fetch(`${API_BASE}/api/chatbot/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: inputMessage })

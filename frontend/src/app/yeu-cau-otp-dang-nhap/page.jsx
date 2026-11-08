@@ -2,6 +2,9 @@
 import { useState } from 'react';
 import axios from 'axios';
 
+// ✅ Tự động kết nối Backend Render khi deploy hoặc localhost khi test máy
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://quan-ly-tuyen-sinh-agu-1.onrender.com';
+
 export default function YeuCauOTPDangNhapPage() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
@@ -10,7 +13,8 @@ export default function YeuCauOTPDangNhapPage() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await axios.post('http://localhost:5000/api/auth/yeu-cau-otp-dang-nhap', { email });
+      // ✅ Đã thay thế URL hardcode localhost thành API_URL
+      const res = await axios.post(`${API_URL}/api/auth/yeu-cau-otp-dang-nhap`, { email });
       alert(`✅ ${res.data.message}\nOTP demo: ${res.data.otpDemo}`);
       // Chuyển đến trang xác thực OTP đăng nhập kèm email
       window.location.href = `/xac-thuc-otp-dang-nhap?email=${encodeURIComponent(email)}`;

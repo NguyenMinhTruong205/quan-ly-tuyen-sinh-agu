@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
+// ✅ Tự động chọn URL Render (khi deploy) hoặc localhost (khi test máy cá nhân)
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://quan-ly-tuyen-sinh-agu-1.onrender.com';
+
 export default function SubmitApplicationPage() {
   const router = useRouter();
 
@@ -44,7 +47,7 @@ export default function SubmitApplicationPage() {
 
   const handleConfirmUpload = async (e) => {
     e.preventDefault();
-    if (!uploaderName.trim()) {
+    if (selectedFile && !uploaderName.trim()) {
       alert('Vui lòng nhập Họ tên người upload file!');
       return;
     }
@@ -60,7 +63,6 @@ export default function SubmitApplicationPage() {
     setLoading(true);
 
     try {
-      // Gửi dữ liệu dạng JSON (không cần FormData nếu không xử lý file ở Backend)
       const payload = {
         hoTen: formData.hoTen,
         cccd: formData.cccd,
@@ -73,8 +75,9 @@ export default function SubmitApplicationPage() {
 
       console.log('Dữ liệu gửi đi:', payload);
 
+      // ✅ Đã cập nhật endpoint gọi về Backend Render bằng biến môi trường
       const res = await axios.post(
-        'http://localhost:5000/api/ho-so',
+        `${API_URL}/api/ho-so`,
         payload,
         {
           headers: {
