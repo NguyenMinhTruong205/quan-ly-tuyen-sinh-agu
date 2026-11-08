@@ -11,55 +11,41 @@ const chatbotRoutes = require('./routes/chatbotRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-
-// === Middleware ===
-const allowedOrigins = [
-  'http://localhost:3000',
-  'https://quan-ly-tuyen-sinh-agu-omega.vercel.app'
-];
-
+// === Middleware CORS linh hoạt ===
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-
-    console.log('CORS blocked origin:', origin);
-    return callback(new Error('Origin not allowed by CORS'));
-  },
+  origin: true, // Cho phép tất cả origin kết nối (FE local & FE Vercel cá nhân mới)
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 app.use(cors(corsOptions));
-
 app.use(express.json());
 
 // === Đăng ký đường dẫn API ===
-app.use('/api/auth', authRoutes);        // Xác thực & phân quyền (/api/auth/dang-ky, /api/auth/dang-nhap)
-app.use('/api/ho-so', hoSoRoutes);       // Quản lý hồ sơ tuyển sinh (/api/ho-so/tra-cuu)
+app.use('/api/auth', authRoutes);        // Xác thực & phân quyền (/api/auth/dang-ky, /api/auth/xac-thuc-otp)
+app.use('/api/ho-so', hoSoRoutes);       // Quản lý hồ sơ tuyển sinh
 app.use('/api/chatbot', chatbotRoutes);  // Chatbot hỗ trợ
 
 // === Kết nối MongoDB ===
 const connectDB = async () => {
-  if (mongoose.connection.readyState === 1) {
-    return;
-  }
+  if (mongoose.connection.readyState === 1) return;
+
   const mongoUri = process.env.MONGODB_URI;
   if (!mongoUri) {
-    throw new Error('Biến môi trường MONGODB_URI chưa được thiết lập!');
+    console.error('❌ Thiếu biến MONGODB_URI trong file .env!');
+    return;
   }
-  await mongoose.connect(mongoUri, {
-    serverSelectionTimeoutMS: 8000,
-  });
-  console.log('✅ Kết nối CSDL MongoDB thành công');
+  
+  try {
+    await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 5000 });
+    console.log('✅ Kết nối CSDL MongoDB thành công');
+  } catch (err) {
+    console.error('❌ Lỗi kết nối MongoDB:', err.message);
+  }
 };
 
-// Kết nối ngay khi khởi động server
-connectDB().catch((err) => {
-  console.error('❌ Lỗi kết nối MongoDB:', err.message);
-});
+connectDB();
 
 // === Trang chủ Backend ===
 app.get('/', (req, res) => {
@@ -97,16 +83,11 @@ app.get('/api/health', async (req, res) => {
       status: dbStatus,
       readyState: mongoose.connection.readyState,
       message: dbMessage
-    },
-    gemini: {
-      status: hasGeminiKey ? 'ready' : 'missing_key',
-      message: hasGeminiKey ? 'Gemini API Key đã sẵn sàng' : 'Chưa cấu hình GEMINI_API_KEY'
     }
   });
 });
 
-// === Khởi động server ===
-app.listen(PORT, () => {
+// === Khởi động server với Host 0.0.0.0 cho Render ===
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Backend Server đang chạy tại cổng ${PORT}`);
-  console.log(`📍 Truy cập: http://localhost:${PORT}`);
 });
