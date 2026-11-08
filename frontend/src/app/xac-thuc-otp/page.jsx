@@ -4,6 +4,9 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
+// Khai báo trực tiếp Domain Render (có fallback an toàn)
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || 'https://quan-ly-tuyen-sinh-agu.onrender.com').replace(/\/+$/, '');
+
 export default function VerifyOtpPage() {
   const [form, setForm] = useState({ email: '', otp: '' });
   const [loading, setLoading] = useState(false);
@@ -17,7 +20,8 @@ export default function VerifyOtpPage() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await axios.post('http://localhost:5000/api/auth/xac-thuc-otp', form);
+      // Thay localhost:5000 bằng API_BASE
+      const res = await axios.post(`${API_BASE}/api/auth/xac-thuc-otp`, form);
       alert('Xác thực OTP thành công! Chuyển hướng sang trang đăng nhập.');
       router.push('/dang-nhap');
     } catch (err) {
