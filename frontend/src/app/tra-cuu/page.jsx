@@ -4,7 +4,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://quan-ly-tuyen-sinh-agu.onrender.com";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://quan-ly-tuyen-sinh-agu-1.onrender.com";
 
 const STATUS_MAP = {
   "Chờ thẩm định": {
