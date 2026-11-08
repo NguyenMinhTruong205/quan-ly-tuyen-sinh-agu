@@ -73,3 +73,40 @@ exports.xacThucOTP = async (req, res) => {
     return res.status(500).json({ message: 'Lỗi server khi xác thực OTP' });
   }
 };
+
+// 3. ĐĂNG NHẬP (Bổ sung mới)
+exports.dangNhap = async (req, res) => {
+  try {
+    const { email, matKhau } = req.body;
+    if (!email || !matKhau) {
+      return res.status(400).json({ message: 'Thiếu email hoặc mật khẩu' });
+    }
+
+    const user = await User.findOne({ email: email.toLowerCase().trim() });
+    if (!user) {
+      return res.status(404).json({ message: 'Tài khoản không tồn tại' });
+    }
+
+    // Kiểm tra mật khẩu (So sánh trực tiếp với chuỗi lưu trữ)
+    if (user.matKhau !== matKhau) {
+      return res.status(400).json({ message: 'Mật khẩu không chính xác' });
+    }
+
+    // Cấp Token JWT
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET || 'secret_key',
+      { expiresIn: '1d' }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: 'Đăng nhập thành công!',
+      token,
+      user: { id: user._id, email: user.email, hoTen: user.hoTen }
+    });
+  } catch (err) {
+    console.error('Lỗi đăng nhập:', err);
+    return res.status(500).json({ message: 'Lỗi server khi đăng nhập' });
+  }
+};
