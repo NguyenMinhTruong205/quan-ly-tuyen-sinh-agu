@@ -46,12 +46,8 @@ export default function TraCuuPage() {
         }
       );
 
-      console.log("Dữ liệu tra cứu Backend trả về:", response.data);
-
-      // ✅ Linh hoạt lấy dữ liệu hoSo từ mọi kiểu response Backend trả về
       let rawData = response.data?.data || response.data?.hoSo || response.data;
 
-      // Nếu Backend trả về mảng danh sách hồ sơ, lấy phần tử đầu tiên
       if (Array.isArray(rawData)) {
         rawData = rawData[0];
       }
@@ -61,13 +57,17 @@ export default function TraCuuPage() {
         return;
       }
 
-      // ✅ Chuẩn hóa map linh hoạt các trường dữ liệu
+      // ✅ Đã sửa cú pháp toán tử an toàn, không gây lỗi build Vercel
+      const diemXetTuyenVal = rawData.diemXetTuyen != null 
+        ? rawData.diemXetTuyen 
+        : (rawData.tongDiem != null ? rawData.tongDiem : "Chưa cập nhật");
+
       const formattedData = {
         hoTen: rawData.hoTen || rawData.user?.hoTen || "Thí sinh",
-        maHoSo: rawData.maHoSo || rawData._id?.slice(-6).toUpperCase() || "Đã cấp",
+        maHoSo: rawData.maHoSo || (rawData._id ? String(rawData._id).slice(-6).toUpperCase() : "Đã cấp"),
         cccd: rawData.cccd || rawData.user?.cccd || value,
         nganhDangKy: rawData.nganhDangKy || rawData.nganhXetTuyen || "Công nghệ thông tin",
-        diemXetTuyen: rawData.diemXetTuyen ?? rawData.tongDiem ?? "Chưa cập nhật",
+        diemXetTuyen: diemXetTuyenVal,
         trangThai: rawData.trangThai || rawData.status || "Chờ thẩm định",
         mshv: rawData.mshv || rawData.maSinhVien || "",
         emailSinhVien: rawData.emailSinhVien || rawData.email || "",
@@ -112,7 +112,6 @@ export default function TraCuuPage() {
 
   return (
     <div className="page">
-      {/* TIÊU ĐỀ */}
       <section className="hero">
         <div className="hero-inner">
           <div className="eyebrow">AGU · HỆ THỐNG TUYỂN SINH</div>
@@ -124,7 +123,6 @@ export default function TraCuuPage() {
         </div>
       </section>
 
-      {/* NỘI DUNG CHÍNH */}
       <main className="main-content">
         <section className="search-card">
           <div className="section-heading">
@@ -181,7 +179,6 @@ export default function TraCuuPage() {
           )}
         </section>
 
-        {/* KẾT QUẢ */}
         {result && (
           <section className="result-card">
             <div className="result-header">
@@ -302,7 +299,6 @@ export default function TraCuuPage() {
         )}
       </main>
 
-      {/* CHÂN TRANG */}
       <footer className="footer">
         <div className="footer-brand">QUẢN LÝ TUYỂN SINH AGU</div>
         <p>Hệ thống hỗ trợ tra cứu hồ sơ tuyển sinh.</p>
@@ -600,4 +596,161 @@ export default function TraCuuPage() {
         .failure-box {
           border: 1px solid #f4caca;
           background: #fff5f5;
-          color: #a82d3b
+          color: #a82d3b;
+        }
+
+        .note-box p,
+        .success-box p,
+        .warning-box p,
+        .failure-box p {
+          margin: 5px 0 0;
+        }
+
+        .privacy-note {
+          margin: 23px 0 0;
+          color: #8b96a8;
+          font-size: 11px;
+          line-height: 1.7;
+        }
+
+        .help-box {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px;
+          margin-top: 23px;
+          padding: 17px;
+          border: 1px solid #dce5f3;
+          border-radius: 12px;
+          background: #fafbff;
+          color: #697991;
+          font-size: 13px;
+          line-height: 1.7;
+        }
+
+        .help-box p {
+          margin: 0;
+        }
+
+        .help-icon {
+          width: 23px;
+          height: 23px;
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          background: #e8effd;
+          color: #2854a1;
+          font-weight: 800;
+        }
+
+        .footer {
+          padding: 26px 16px;
+          border-top: 1px solid #e4e9f2;
+          background: #ffffff;
+          text-align: center;
+          color: #7c899e;
+          font-size: 12px;
+          line-height: 1.8;
+        }
+
+        .footer-brand {
+          color: #345782;
+          font-size: 13px;
+          font-weight: 800;
+          letter-spacing: 0.5px;
+        }
+
+        .footer p {
+          margin: 5px 0;
+        }
+
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(8px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @media (max-width: 480px) {
+          .search-row {
+            flex-direction: column;
+          }
+
+          .search-row input {
+            width: 100%;
+            flex: auto;
+          }
+
+          .search-row button {
+            width: 100%;
+          }
+
+          .info-grid {
+            grid-template-columns: 1fr;
+            gap: 18px;
+          }
+
+          .section-heading h2,
+          .result-header h2 {
+            font-size: 18px;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function InfoItem({ label, value, highlight = false, mask = false }) {
+  const displayValue =
+    value === null || value === undefined || value === ""
+      ? "Chưa cập nhật"
+      : String(value);
+
+  const safeValue =
+    mask &&
+    displayValue !== "Chưa cập nhật" &&
+    displayValue.length > 4
+      ? "*".repeat(displayValue.length - 4) + displayValue.slice(-4)
+      : displayValue;
+
+  return (
+    <div className="info-item">
+      <div className="info-label">{label}</div>
+      <div className={`info-value ${highlight ? "highlight" : ""}`}>
+        {safeValue}
+      </div>
+
+      <style jsx>{`
+        .info-label {
+          margin-bottom: 7px;
+          color: #8491a5;
+          font-size: 12px;
+        }
+
+        .info-value {
+          color: #263d5e;
+          font-size: 14px;
+          font-weight: 600;
+          line-height: 1.6;
+          overflow-wrap: anywhere;
+        }
+
+        .info-value.highlight {
+          color: #285ba5;
+          font-weight: 800;
+        }
+      `}</style>
+    </div>
+  );
+}
